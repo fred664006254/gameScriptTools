@@ -1,0 +1,58 @@
+#!/bin/bash
+# 生成目标index的版本号 $1 目标index所在的目录
+# $2 js/manifest 或者 res/resource/default
+DIR=$(cd `dirname $0`; pwd)
+cd $DIR
+
+echo '开始处理js'
+start_time=$(date +%s)
+
+record()
+{
+    end_time=$(date +%s)
+    cost_time=$[ $end_time-$start_time ]
+    start_time=$end_time
+    echo $* '(耗时:'$cost_time's)'
+}
+
+publisFile=$1
+
+# 查找js文件名
+
+cd $publisFile
+jsname=`cat manifest.json | grep main.min` || exit 1
+jsname=${jsname/*main.min/main.min}
+jsname=${jsname/.js\"*/.js}
+record '找到代码主js: '$jsname
+
+egretjsname=`cat manifest.json | grep game.min` || exit 1
+egretjsname=${egretjsname/*game.min/game.min}
+egretjsname=${egretjsname/.js\"*/.js}
+record '找到引擎js: '$egretjsname
+
+cd $publisFile/js
+record '开始处理:'$jsname
+record '生成临时文件...'
+cat $jsname | grep 'var Main=' > maintemp.min.js || exit 1
+sed -i ""  's/.*var Main=/var Main=/' maintemp.min.js || exit 1
+sed -i ""  's/Main.prototype,"Main");.*/Main.prototype,"Main");/' maintemp.min.js || exit 1
+record '合并Main到'$egretjsname
+cat maintemp.min.js >> $egretjsname || exit 1
+rm -rf maintemp.min.js
+record '合并完成并删除临时文件'
+crcgamejs=`crc32 $egretjsname`
+mv $egretjsname game.min_$crcgamejs.js || exit 1
+record '重命名:'$egretjsname '=>' game.min_$crcgamejs.js
+
+record '开始处理主js文件'
+sed -i ""  's/var Main=.*Main.prototype,"Main");//' $jsname || exit 1
+
+crcjs=`crc32 $jsname`
+mv $jsname main.min_$crcjs.js || exit 1
+record '重命名:'$jsname '=>' main.min_$crcjs.js
+
+cd $publisFile
+record '开始修改manifest版本号'
+sed -i ""  "s/$jsname/main.min_$crcjs.js/" manifest.json || exit 1
+sed -i ""  "s/$egretjsname/game.min_$crcgamejs.js/" manifest.json || exit 1
+record '处理完成'

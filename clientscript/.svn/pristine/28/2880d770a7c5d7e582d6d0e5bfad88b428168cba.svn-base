@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#注意需要管理员权限，请使用sudo调用
+
+cd /usr/local/lib/node_modules/egret/
+sed -i ""  "s/max-old-space-size=2000/max-old-space-size=4096/" egret
+sed -i ""  "s/max-old-space-size=2000/max-old-space-size=4096/" egretnpm
+
+cd /Applications/EgretLauncher.app/Contents/Resources/app/engine/mac/bin/
+sed -i ""  "s/max-old-space-size=2000/max-old-space-size=4096/" egret
+
+cd /Applications/EgretLauncher.app/Contents/Resources/app/engine/win/bin/
+sed -i ""  "s/max-old-space-size=2000/max-old-space-size=4096/" egret.cmd
