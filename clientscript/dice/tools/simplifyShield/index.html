@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            overflow-y: scroll;
+        }
+        body {
+            background-color: #ccc;
+        }
+        .contant {
+            width: 100%;
+            max-width: 1200px;
+            min-height: 100%;
+            /* overflow: hidden; */
+            margin: 0 auto;
+            border: none;
+            background-color: bisque;
+            padding-bottom: 10px;
+            box-sizing: border-box;
+        }
+        #label {
+            width: 98%;
+            /* height: 100%; */
+            margin: 0 auto;
+            display: block;
+            resize: vertical;
+        }
+    </style>
+    <script>
+        function readFile(fileUpload) {
+            return new Promise((resolve, reject) => {
+                let __file = fileUpload.files[0];
+                if (__file) {
+                    let reader = new FileReader();
+                    reader.readAsText(__file, "UTF-8");
+                    reader.onload = e => {
+                        resolve(e.target.result);
+                    }
+                } else {
+                    reject();
+                }
+            })
+        }
+
+        function saveFile(content, filename) {
+            var eleLink = document.createElement('a');
+            eleLink.download = filename;
+            eleLink.style.display = 'none';
+            var blob = new Blob([content]);
+            eleLink.href = URL.createObjectURL(blob);
+            document.body.appendChild(eleLink);
+            eleLink.click();
+            document.body.removeChild(eleLink);
+        }
+
+        class Format {
+            constructor(arr) {
+                this._arr = this.allToLower(arr);
+                this._lindex = [];
+                this._dir = {};
+                this._useful = [];
+                this._garbage = [];
+                this._relation = {};
+                this.initDir();
+            }
+
+            initDir() {
+                this._dir = {};
+                this._lindex = [];
+                this._arr.forEach(v => {
+                    const l = [...v].length;
+                    if (!this._dir[`l${l}`]) {
+                        this._dir[`l${l}`] = [];
+                    }
+                    this._dir[`l${l}`].push(v);
+
+                    if (!this._lindex.includes(l)) {
+                        this._lindex.push(l)
+                    }
+                })
+
+                this._lindex.sort((a, b) => { return a - b; })
+            }
+
+            allToLower(arr) {
+                let rsl = [];
+                arr.forEach(v => {
+                    rsl.push(v.toLowerCase());
+                });
+                return Array.from(new Set(rsl));
+            }
+
+            removeDup() {
+                this._useful = [];
+                this._garbage = [];
+                this._relation = {};
+                while(this._lindex.length > 0) {
+                    const n = this._lindex.shift();
+                    // if (n == 1) {
+                    //     this._useful = this._useful.concat(this._dir[`l${n}`]);
+                    //     continue;
+                    // }
+
+                    this.sortBigLength(n);
+                }
+            }
+
+            sortBigLength(n) {
+                const arrN = this._dir[`l${n}`];
+                this._useful = this._useful.concat(arrN);
+                if (this._lindex.length == 0) return;
+                for(let i=0;i<this._lindex.length;i++) {
+                    const kn = this._dir[`l${this._lindex[i]}`];
+                    for (let j=0;j<kn.length;j++) {
+                        for (let k=0;k<arrN.length;k++) {
+                            if (kn[j].includes(arrN[k])) {
+                                const __gbg = kn.splice(j, 1)[0];
+                                this._garbage.push(__gbg);
+                                if (!this._relation[arrN[k]]) {
+                                    this._relation[arrN[k]] = []
+                                }
+                                this._relation[arrN[k]].push(__gbg);
+                                j--;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+<body>
+    <div class="contant" id="contant">
+        <input type="file" accept=".json" id="cfg">
+        <button id="saveBtn">保存</button>
+        <p>处理结果：</p>
+        <textarea name="" id="label" cols="30" rows="10"></textarea>
+    </div>
+
+    <script>
+        window.addEventListener("load", () =>{
+            document.getElementById("label").style.height = document.getElementById("contant").offsetHeight - 60 + "px";
+        })
+
+        var inp = document.getElementById('cfg');
+        var dia = document.getElementById('label');
+        var saveBtn = document.getElementById('saveBtn');
+
+        saveBtn.hidden = true;
+        var _json, _name, _fmt;
+        inp.onchange = function () {
+            if (!inp.files[0]) {
+                dia.innerHTML = "";
+                saveBtn.hidden = true;
+                return;
+            }
+            dia.innerHTML = `请稍后......`
+            _name = inp.files[0].name
+            readFile(inp)
+            .then((res) => {
+                _json = JSON.parse(res);
+                _fmt = new Format(_json);
+                _fmt.removeDup();
+                dia.innerHTML = JSON.stringify(_fmt._relation, null, 4);
+                saveBtn.hidden = false;
+            })
+        }
+
+        saveBtn.onclick = function () {
+            saveFile(JSON.stringify(_fmt._useful, null, 2), _name.replace(".json", "_simplify.json"));
+        }
+    </script>
+</body>
+</html>
