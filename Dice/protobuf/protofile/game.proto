@@ -1,0 +1,777 @@
+// 如果使用此注释，则使用proto3; 否则使用proto2
+syntax = "proto3";
+
+package dice;
+//引用消息
+
+    //通用外层协议请求
+    message CsRayMsg {
+        int32 rnum = 1;
+        int32 uid = 2;
+        string access_token = 3;
+        string secret = 4;
+        int64 ts = 5;
+        int32 logints = 6;
+        int32 zoneid = 7;
+        bytes params = 8;
+        string cmd = 9;
+    }
+    
+    //通用外层协议回应
+    message ScRayMsg {
+        int32 rnum = 1;
+        int64 uid = 2;
+        string access_token = 3;
+        int64 ts = 4;
+        int32 ret = 5;
+        string msg = 6;
+        int32 version = 7;
+        map<string,bytes> model = 8;
+        bytes data = 9;
+        string cmd = 10;
+    }
+
+    //登陆接口请求
+    message cs_user_login{
+        string pid = 1;
+        string plat = 2;
+        string serverIp = 3;
+        string serverPort = 4;
+        string deviceid = 5;
+        bool   enter = 6;
+        string client_ip = 7;
+    }
+    //登陆接口返回
+    message sc_user_login{
+        int32 timezone = 1;//时区
+        map<string,int32> initRedpoint = 2;//初始化红点
+        string moneyType = 3;//货币类型
+        map<string,string> orderCfg = 4;//商品ID转化
+        int32 regdt = 5;//用户注册时间
+        map<string,int32> switch = 6;//开关
+        int32 newerFlag = 7;//是否是新用户
+    }
+
+    //用户创建名称接口
+    message cs_user_createName{
+        string name = 1;//修改的名称 不可以是自己的名称
+    }
+    //用户创建名称返回
+    message sc_user_createName{
+        int32 nameFlag = 1;//改名状态 0成功 1重名 2长度不符合 3字符不符合
+    }
+
+    //用户修改名称接口
+    message cs_user_rename{
+        string name = 1;//修改的名称 不可以是自己的名称
+    }
+    //用户修改名称返回
+    message sc_user_rename{
+        int32 nameFlag = 1;//改名状态 0成功 1重名 2长度不符合 3字符不符合
+    }
+
+    //用户重置胜率接口
+    message cs_user_resetwin{
+
+    }
+    //用户重置胜率返回
+    message sc_user_resetwin{
+
+    }
+
+    //重置协同次数接口
+    message cs_user_resetjnum{
+
+    }
+    //重置协同次数返回
+    message sc_user_resetjnum{
+
+    }
+
+    //开启卡片宝箱接口
+    message cs_user_openCardBox{
+
+    }
+    //开启卡片宝箱返回
+    message sc_user_openCardBox{
+        string rewards = 1;//奖励
+    }
+
+    //领取政令奖励接口
+    message cs_user_getRoyalPass{
+        int32 isAdvanced = 1;//是否领取皇家政令 0普通 1皇家
+        string key = 2;//领取奖励的key
+    }
+    //领取政令奖励返回
+    message sc_user_getRoyalPass{
+        string rewards = 1;//返回奖励
+    }
+
+    //跨天刷新接口
+    message cs_user_freshDayInfo{
+
+    }
+    //跨天刷新接口返回
+    message sc_user_freshDayInfo{
+
+    }
+
+    //新手引导步骤接口
+    message cs_user_newerGuild{
+        int32 step = 1;//当前步骤
+    }
+    //新手引导步骤返回
+    message sc_user_newerGuild{
+        
+    }
+
+    //分阶段引导步骤接口
+    message cs_user_stepGuild{
+        string stepId = 1;//当前步骤Id
+    }
+    //分阶段引导步骤返回
+    message sc_user_stepGuild{
+        
+    }
+
+    //同步请求接口
+    message cs_user_sync{
+        
+    }
+    //同步请求返回
+    message sc_user_sync{
+        
+    }
+
+    
+    //每日任务刷新接口
+    message cs_task_fresh{
+        int32 keyPos = 1;//刷新哪一个任务 1 2 3
+    }
+    //每日任务刷新返回
+    message sc_task_fresh{
+
+    }
+
+    //领取每日任务免费奖励接口
+    message cs_task_getDayRewards{
+        int32 keyPos = 1;//三个奖励位置1 2 3
+    }
+    //领取每日任务免费奖励返回
+    message sc_task_getDayRewards{
+        string rewards = 1;//奖励格式
+    }
+
+    //领取每日任务奖励接口
+    message cs_task_getRewards{
+        string taskId = 1;//任务ID
+    }
+    //领取每日任务奖励返回
+    message sc_task_getRewards{
+        string rewards = 1;//奖励格式
+    }
+
+    //领取成就奖励接口
+    message cs_task_getAchievement{
+        string rkey = 1;//成就ID
+    }
+    //领取成就奖励返回
+    message sc_task_getAchievement{
+        string rewards = 1;//奖励格式
+    }
+
+    //商店购买钻石宝箱接口
+    message cs_shop_buyBox{
+        string shopId = 1;//购买商品ID或位置
+        int32 idDiscout = 2;//是否打折 0否 1是
+    }
+    //商店购买钻石宝箱返回
+    message sc_shop_buyBox{
+        string rewards = 1;//奖励格式
+    }
+
+    //每日特殊商店购买接口
+    message cs_shop_buyDailyshop{
+        string shopId = 1;//购买商品ID或位置
+    }
+    //每日特殊商店购买返回
+    message sc_shop_buyDailyshop{
+        string rewards = 1;//奖励格式
+    }
+
+    //商店购买金币宝箱接口
+    message cs_shop_buyGold{
+        string shopId = 1;//购买商品ID或位置
+    }
+    //商店购买金币宝箱返回
+    message sc_shop_buyGold{
+        
+    }
+
+    //商店购买表情包接口
+    message cs_shop_buyEmoticon{
+       string shopId = 1;//表情商店ID
+    }
+    //商店购买表情包返回
+    message sc_shop_buyEmoticon{
+        
+    }
+
+    //骰子升级接口
+    message cs_dice_upgrade{
+       string diceId = 1;//升级的骰子
+    }
+    //骰子升级返回
+    message sc_dice_upgrade{
+        
+    }
+
+    //骰子使用或上阵接口
+    message cs_dice_use{
+       string diceId = 1;//上阵的骰子
+       int32 lineNo = 2;//上阵的队列
+       int32 upPos = 3;//上阵的位置
+    }
+    //骰子使用或上阵返回
+    message sc_dice_use{
+        
+    }
+
+    //选择上阵队列接口
+    message cs_dice_chooseLine{
+       int32 lineNo = 1;//上阵的队列
+    }
+    //选择上阵队列返回
+    message sc_dice_chooseLine{
+        
+    }
+
+    //购买场景皮肤接口
+    message cs_dice_buySkin{
+       string skinId = 1;//皮肤的ID
+    }
+    //购买场景皮肤返回
+    message sc_dice_buySkin{
+        
+    }
+
+    //选择使用场景皮肤
+    message cs_dice_chooseSkin{
+       string skinId = 1;//上阵的皮肤
+    }
+    //选择使用场景皮肤返回
+    message sc_dice_chooseSkin{
+        
+    }
+    
+
+    //获取邮件列表
+    message cs_mail_getmymaillist{
+
+    }
+    //获取邮件返回
+    message sc_mail_getmymaillist{
+
+    }
+    //领取邮件奖励或读取邮件
+    message cs_mail_getReward{
+        string mailId = 1;//邮件ID
+    }
+    //领取邮件奖励或读取邮件返回
+    message sc_mail_getReward{
+        string rewards = 1;//奖励
+    }
+
+    //
+    message cs_pay_processpayment{
+        string order_id = 1;
+        string name = 2;
+    }
+    message sc_pay_processpayment{
+        
+    }
+    message sc_push_pay{
+        string rewards = 1;//返回奖励
+        Payment payment = 2;//充值数据
+        message Payment{
+            string itemId = 1;//充值ID
+            int32 num = 2;//加的钻石
+            string orderId = 3;//订单ID
+            string amount = 4;//花费钱
+            int32 extra_num = 5;//额外钻石
+        }
+    }
+    //推送邀请好友信息
+    message sc_push_inviteFriend{
+       
+    }
+
+    //查看Pk排行榜接口
+    message cs_rank_getPvp{
+        
+    }
+    //查看Pk排行榜返回
+    message sc_rank_getPvp{
+        repeated RankData pvpRank = 1;
+        message RankData{
+            int32 value = 1;//分数或轮次
+            int32 score = 2;//奖杯
+            int32 level = 3;//等级
+            string name = 4;//名称
+            int32 uid = 5;//uid 
+            repeated LineModelInfo line = 6;//阵容
+            message LineModelInfo{
+                string id = 1;//骰子ID
+            }
+        }
+    }
+
+    //查看Pk排行榜接口
+    message cs_rank_getPve{
+        
+    }
+    //查看Pk排行榜返回
+    message sc_rank_getPve{
+        repeated RankData pveRank = 1;
+        message RankData{
+            int32 value = 1;//分数或轮次
+            int32 score = 2;//奖杯
+            int32 level = 3;//等级
+            string name = 4;//名称 
+            int32 uid = 5;//uid
+            repeated LineModelInfo line = 6;//阵容
+            int32 fscore = 7;//奖杯
+            int32 flevel = 8;//等级
+            string fname = 9;//名称
+            int32 fuid = 10;//fuid
+            repeated LineModelInfo fline = 11;//阵容 
+            message LineModelInfo{
+                string id = 1;//骰子ID
+            }
+        }
+    }
+
+    //找寻对手
+    message cs_battle_find{
+        int32 findType = 1;//对战方式 1对战 2协作
+        int32 findNum = 2;//查找次数，从1开始
+    }
+    //找寻对手返回
+    message sc_battle_find{
+        int32 matchFlag = 1;//0匹配失败 1匹配成功 2查找超时
+        int32 randSeed = 2;//随机种子
+    }
+
+    //取消找寻对手
+    message cs_battle_cancelFind{
+        int32 findType = 1;//对战方式 1对战 2协作
+    }
+    //取消找寻对手返回
+    message sc_battle_cancelFind{
+        
+    }
+
+    //好友找寻对手
+    message cs_battle_findFriend{
+        int32 findType = 1;//对战方式 1对战 2协作
+        int32 findNum = 2;//查找次数，从1开始
+        int32 isCreate = 3;//是否是创建 1是
+        int32 passCode = 4;//加入密码
+    }
+    //好友找寻对手返回
+    message sc_battle_findFriend{
+        int32 matchFlag = 1;//0匹配失败 1匹配成功 2查找超时
+        int32 showRoomId = 2;//房间码
+        int32 noThisRoom = 3;//1 没有找到此房间号
+        int32 randSeed = 4;//随机种子
+    }
+
+    //取消找寻好友房间
+    message cs_battle_cancelFindFriend{
+        int32 findType = 1;//对战方式 1对战 2协作
+    }
+    //取消找寻好友房间返回
+    message sc_battle_cancelFindFriend{
+        
+    }
+
+    //战斗初始化接口
+    message cs_battle_init{
+        
+    }
+    //战斗初始化返回
+    message sc_battle_init{
+        InitData initData = 1;
+        int64 startTime = 2;
+        //战斗初始化信息
+        message InitData{
+            map<string,Player> player = 1;//敌我双方信息
+            int32 frame = 2;//当前帧
+            int32 isFriend = 3;//
+        }
+        //玩家信息
+        message Player{
+            int32 uid = 1;//用户Uid
+            string name = 2;//用户名称
+            int32 level = 3;//用户等级
+            int32 win = 4;//胜利次数
+            int32 lose = 5;//失败次数
+            int32 score = 6;//奖杯数 
+            int32 crivalue = 7;//暴击值
+            int32 zengfu = 8;//是否有增幅 0无 1有
+            repeated UpInfo upInfo = 9;
+            string skin = 10;//上阵皮肤
+            int32 diceNum = 11;//上阵数量
+            int32 strategy = 12;//策略
+        }
+        //升级列表信息
+        message UpInfo {
+            string id = 1;//骰子ID
+            int32 lv = 3;//骰子初始等级
+            int32 pwlv = 4;//骰子能量等级，客户端专用，不能用于网络传输数据
+        }
+    }
+
+    //战斗同步请求
+    message cs_battle_sync{
+        int32 frame=1;//逻辑帧序号
+        int32 rframe = 2;//已收到逻辑帧
+        string checkValue = 3;//需要校验的玩家数据
+        int32 checkframe = 4;//checkvaue数据对应的帧，从0开始
+    }
+
+    //战斗同步返回接口
+    message sc_battle_sync{
+        map<string,SyncOptData> syncOptData = 1;//同步操作数据
+        int32 frame = 2;//当前逻辑帧
+        int32 targetFrame = 3;//对手的逻辑帧
+        message SyncOptData{
+            repeated Opt opt = 1;
+        }
+        message Opt{
+            int32 optUid = 1;//操作ID
+            int32 opt = 2; //操作类型
+            string fromPos = 3;//操作位置1
+            string toPos = 4;//操作位置2
+            string upId = 5;//升级的骰子ID
+            int32 frame = 6;//逻辑帧号
+            int32 optseed = 7;//操作的随机种子
+        }
+    }
+    //操作接口
+    message cs_battle_opt{
+        int32 opt = 2; //操作类型 1升级，2合成，3购买，4认输，5发表情
+        string fromPos = 3;//操作位置1
+        string toPos = 4;//操作位置2
+        string upId = 5;//升级骰子ID，或者表情ID
+        int32 optseed = 6;//操作的随机种子
+    }
+    //操作接口返回
+    message sc_battle_opt{
+        
+    }
+
+    //战斗结束接口
+    message cs_battle_end{
+        int32 turns = 1;//轮数
+        int32 winFlag = 2;//0负 1胜
+        int32 star = 3;//战斗中合成7星
+        map<string,int32> starArr = 4;//战斗中合成3星及以上的数量
+    }
+    //战斗结束返回
+    message sc_battle_end{
+        map<string,RewardInfo> rewardArr = 1;//奖励
+        message RewardInfo{
+            int32 score = 1;//奖杯
+            int32 gold = 2;//金币
+            int32 gem = 3;//钻石
+            int32 winNum = 4;//连胜次数
+        }
+    }
+
+    //查看战斗记录接口
+    message cs_battle_getLog{
+        
+    }
+    //查看战斗记录返回
+    message sc_battle_getLog{
+        
+    }
+
+    //举报接口
+    message cs_battle_complain{
+        int32 logKey = 1;//数组的key 需要+1
+    }
+    //举报返回
+    message sc_battle_complain{
+        
+    }
+
+    //观看广告接口
+    message cs_advertise_watch{
+        int32 advType = 1;//1刷新礼包商店 2 刷新每日特殊商店 
+        //3增幅 4增加协同次数 5领取支援宝箱
+    }
+    message sc_advertise_watch{
+       string rewards = 1;//奖励返回
+    }
+
+    //公平竞技场开始接口
+    message cs_fairArena_start{
+        
+    }
+    //公平竞技场开始返回
+    message sc_fairArena_start{
+        
+    }
+
+    //公平竞技场选择接口
+    message cs_fairArena_choose{
+        string diceId = 1;
+    }
+    //公平竞技场选择返回
+    message sc_fairArena_choose{
+        
+    }
+
+    //公平竞技场领取奖励接口
+    message cs_fairArena_getReward{
+        string key = 1;//配置里奖励的key
+    }
+    //公平竞技场领取奖励返回
+    message sc_fairArena_getReward{
+        string rewards = 1;
+    }
+
+    //公平竞技场结束接口
+    message cs_fairArena_end{
+        
+    }
+    //公平竞技场结束返回
+    message sc_fairArena_end{
+        
+    }
+
+    //签到接口
+    message cs_signinfo_sign{
+        
+    }
+    //签到接口返回
+    message sc_signinfo_sign{
+        string rewards = 1;
+    }
+    //领取首充奖励接口
+    message cs_signinfo_getFirstRecharge{
+        
+    }
+    //领取首充奖励返回
+    message sc_signinfo_getFirstRecharge{
+        string rewards = 1;
+    }
+
+    //邀请绑定接口
+    message cs_inviteFriend_bind{
+        string bindCode = 1;//绑定码
+    }
+    //邀请绑定接口返回
+    message sc_inviteFriend_bind{
+        string rewards = 1;
+        int32 code = 2;//1绑定码错误 2绑定达到上限 2不能绑定自己
+        bool bindFlag = 3;
+    }
+
+    //领取邀请奖励接口
+    message cs_inviteFriend_getReward{
+        string rkey = 1;//奖励的key
+    }
+    //领取邀请奖励接口返回
+    message sc_inviteFriend_getReward{
+        string rewards = 1;
+    }
+
+
+    
+
+    /////////////////////数据模型
+    //用户信息模型
+    message model_userinfo{
+        int32 uid = 1;//用户id
+        string name = 2;//名称
+        int32 mygid = 3;//工会ID
+        string mygname = 4;//工会名称
+        int32 level = 5;//等级
+        int32 score = 6;//奖杯
+        int32 maxscore = 7;//奖杯
+        int32 gold = 8;//金币
+        int32 gem = 9;//钻石
+        int32 card = 10;//卡的数量
+        int32 win = 11;//胜利次数
+        int32 lose = 12;//失败次数
+        int32 sumb = 13;//总对战次数
+        int32 maxturn = 14;//最大回合  
+        int32 buyg = 15;//购买货币
+        int32 buyt = 16;//最后购买时间
+        int32 buyn = 17;//累计购买次数
+        int32 freeg = 18;//免费获得货币
+    }
+    //骰子模型
+    message model_dice{
+        map<string,DiceInfo> info = 1;//骰子信息
+        int32 crivalue = 2;//暴击伤害
+        message DiceInfo{
+            int32 lv = 1;//骰子等级
+            int32 num = 2;//骰子数量
+        }
+    }
+    //上阵模型
+    message model_line{
+        repeated LineModelInfo info1 = 1;//阵列1信息
+        repeated LineModelInfo info2 = 2;//阵列2信息
+        repeated LineModelInfo info3 = 3;
+        int32 cur = 4;//当前阵列
+        repeated string scene = 5;//场景皮肤信息
+        string sid = 6;//当前场景
+        message LineModelInfo{
+            string id = 1;//骰子ID
+        }
+    }
+    //商店模型
+    message model_shop{
+        map<string,Dailyshop> dailyshop = 1;//每日特殊商店信息
+        Gift gift = 2;
+        map<string,int32> expression = 3;//表情包是否购买标记
+        int32 lastday = 4;//跨天标记
+        message Dailyshop{
+            int32 id = 1;//商品类型 1宝箱 2金币 3钻石 4-7卡片
+            int32 num = 2;//卡片数量
+            int32 hasBuy = 3;//是否购买 0否 1已购
+            string diceId = 4;//骰子ID
+        }
+        message Gift{
+            string id = 1;//礼包ID
+            int32 hasBuy = 2;//是否购买 0否 1已购
+        }
+    }
+    //任务模型
+    message model_dailytask{
+        DailyInfo info = 1;
+        int32 lastday = 2;//跨天标记
+        message DailyInfo{
+            int32 freeGet1 = 1;//每日奖励领取第一个物品
+            int32 freeGet2 = 2;//每日奖励领取第二个物品
+            int32 freeGet3 = 3;//每日奖励领取第三个物品
+            repeated TaskInfo taskInfo = 4;
+            int32 freshFlag = 5; //任务刷新标记
+        }
+        message TaskInfo{
+            string id = 1;//任务ID
+            int32 v = 2;//任务已完成的值
+            int32 f = 3;//任务完成及领取标记 0 未完成 1完成 2已领取
+        }
+
+    }
+    //游戏信息
+    message model_gameinfo{
+        int32 jvip = 1;//是否购买协同模式
+        int32 svip = 2;//是否购买高级通行证
+        map<string,RoyalPass> royalPass = 3;//领取到的等级奖励信息
+        int32 jnum = 4;//当前使用协同次数
+        int32 gnum = 5;//今日领取协同宝箱次数
+        int32 buynum = 6;//当天购买协同次数
+        int32 zengfu = 7;//对战增幅状态0无 1有
+        int32 newerGuild = 8;//当前新手引导步骤
+        map<string,int32> stepGuild = 9;//当前分阶段引导步骤
+        int32 lastday = 10;//跨天标记 
+        message RoyalPass{
+            int32 primary = 1;//普通
+            int32 advanced = 2;//VIP
+        }
+    }
+    //邮件模型
+    message model_mymail{
+        map<string,SystemData> system = 1;//领取到的等级奖励信息
+        int64 checkts = 2;//上次检查邮件时间（前端无视）
+        message SystemData{
+            int32 id = 1;//邮件自增ID
+            string title = 2;//邮件标题
+            string content = 3;//邮件内容
+            int32 ts = 4;//邮件发送时间
+            string rewards = 5;//邮件奖励 
+            int32 isread = 6;//邮件是否已读
+        }
+    }
+
+    //战斗记录
+    message model_battlelog{
+        repeated BattleLogInfo info = 1;//单个战报信息
+        message BattleLogInfo{
+            int32 battleType = 1;//战斗类型
+            int32 changeScore = 2;//变化的分数
+            int32 turns = 3;//轮数
+            int32 winFlag = 4;//0失败 1胜利
+            int32 uid = 5;// 对方uid
+            int32 level = 6;//等级
+            string name = 7;//名称
+            int32 score = 8;//奖杯
+            int32 complain = 9;//是否举报0否 1举报 
+            repeated lineInfo line = 10;//阵容
+            message lineInfo{
+                string id = 1;//骰子ID
+            }
+        }
+    }
+
+    //广告模型
+    message model_advertise{
+        map<string,advInfo> info = 1;//骰子信息
+        int32 lastday = 2;//每日刷新时间
+        message advInfo{
+            int32 st = 1;//上次观看时间
+            int32 num = 2;//今日观看次数
+        }
+    }
+
+    //公平经济场
+    message model_fairArena{
+        int32 status = 1;//1 结束 2开始
+        int32 winNum = 2;//胜利次数
+        int32 loseNum = 3;//失败次数
+        repeated lineInfo line = 4;//
+        map<string,PoolInfo> pool = 5;//骰子信息
+        map<string,int32> rewards = 6;//奖励领取信息
+        message lineInfo{
+            string id = 1;//骰子ID
+        }
+        message PoolInfo{
+            repeated string list = 6;
+        }
+    }
+
+    //签到或其他信息
+    message model_signinfo{
+        map<string,int32> info = 1;//杂项
+        int32 days = 2;//已经签到天数
+        int32 hasSign = 3;//今日是否签到0未 1已签
+        int32 renameNum = 4;//改名次数
+        int32 payFlag = 5;//是否首充
+        int32 lastday = 6;//跨天时间
+    }
+
+    //邀请好友信息
+    message model_inviteFriend{
+        string code = 1;//邀请码
+        int32 score = 2;//我的邀请积分
+        int32 iscore = 3;//我带来的邀请积分
+        map<string,int32> rinfo = 4;//领取信息
+        int32 iuid = 5;//邀请者
+    }
+
+    //成就信息
+    message model_achievement{
+        map<string,Achinfo> info = 1;//成就信息
+        message Achinfo{
+            int32 stage = 1;//当前阶段
+            int32 v = 2;//当前值
+            int32 f = 3;//是否完成或领取0 1 2
+        }
+    }

@@ -1,0 +1,480 @@
+{
+	// Place your Dice workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	// https://blog.csdn.net/maokelong95/article/details/54379046
+	"class PopupView 模板代码": {
+		"prefix": "pppview",
+		"scope": "typescript",
+		"body": [
+		  "class ${TM_FILENAME_BASE} extends PopupView{",
+		  "// need dispose var start",
+		  "// need dispose end",
+		  "    protected initView(): void {",
+		  "",
+		  "    }",
+		  "",
+		  "    protected initTitle(){",
+		  "        super.initTitle();",
+		  "    }",
+		  "",
+		  "    protected getBgName(){",
+		  "        return super.getBgName()",
+		  "    }",
+		  "",
+		  "    protected getShowHeight(){",
+		  "        return super.getShowHeight();",
+		  "    }",
+		  "",
+		  "    protected getShowWidth(){",
+		  "        return super.getShowWidth();",
+		  "    }",
+		  "    ",
+		  "    protected getCloseBtnName(){",
+		  "        return super.getCloseBtnName();",
+		  "    }",
+		  "\tpublic dispose():void",
+          "\t{",
+          "// dispose start",
+          "// dispose end",
+		  "\t\tsuper.dispose();",
+		  "\t}",
+		  "}"
+		],
+		"description": "PopupView 模板代码"
+	  },
+	"class List Item 模板代码": {
+	"prefix": "listitem",
+	"body": [
+		"class ${TM_FILENAME_BASE} extends ScrollListItem {",
+        "",
+        "// need dispose var start",
+        "// need dispose end",
+		"\tconstructor(){",
+		"\t\tsuper()",
+		" \t}",
+		"\tprotected initItem(index:number,data:any,itemParam?:any):void {",
+		"\t}",
+		"",
+		"\t/**",
+		"\t * 不同格子X间距",
+		"\t */",
+		" \tpublic getSpaceX():number",
+		"\t{",
+		"\t\treturn super.getSpaceX();",
+		"\t}",
+		"\t/**",
+		"\t * 不同格子Y间距",
+		"\t */",
+		"\tpublic getSpaceY():number",
+		"\t{",
+		"\t\treturn super.getSpaceY();",
+		"\t}",
+		"",
+		"\tpublic dispose():void",
+        "\t{",
+            "// dispose start",
+            "// dispose end",
+		"\t\tsuper.dispose();",
+		"\t}",
+		"}"
+	],
+	"description": "List Item 模板代码"
+    },
+    "voApi 模板代码": {
+		"prefix": "voapi",
+		"body": [
+		  "namespace Api",
+		  "{",
+		  "    export namespace ${TM_FILENAME_BASE}",
+          "    {",
+            "// need dispose var start",
+            "// need dispose end",
+		  "        export function formatData(data:any):void",
+          "\t\t{",
+		  "            ",
+		  "        }",
+		  "        ",
+		  "\t\texport function dispose():void",
+		  "\t\t{",
+            "// dispose start",
+            "// dispose end",
+		  "        }",
+		  "    }",
+		  "}"
+		],
+		"description": "voApi 模板代码"
+    },
+    "class vo 模板代码": {
+        "prefix": "rvo",
+        "body": [
+          "class ${TM_FILENAME_BASE} extends BaseVo{",
+            "// need dispose var start",
+            "// need dispose end",
+          "\tpublic constructor() {",
+          "\t\tsuper();",
+          "\t\t}",
+          "\tpublic initData(data:any):void{",
+          "\t\tif(data){",
+          "\t\t\tfor(let key in data){",
+          "\t\t\t\tthis[key]=data[key];",
+          "\t\t\t}",
+          "\t\t}",
+          "\t}",
+          "",
+          "\tpublic dispose():void{",
+            "// dispose start",
+            "// dispose end",
+          "\t\tsuper.dispose()",
+          "\t}",
+          "}"
+        ],
+        "description": "class vo 模板代码"
+    },
+	"basebitmap 模板代码": {
+		"prefix": "bm",
+		"scope": "typescript",
+		"body": [
+			"let ${1} = BaseBitmap.create(${2});",
+			"this.addChild(${1});",
+			"${1}.x = ${6}",
+			"${1}.y = ${7}"
+		],
+		"description": "basebitmap 模板代码"
+    },
+    "baseloadbitmap 模板代码": {
+		"prefix": "blm",
+		"scope": "typescript",
+		"body": [
+			"let ${1} = BaseLoadBitmap.create(${2});",
+			"this.addChild(${1});",
+			"${1}.x = ${6}",
+			"${1}.y = ${7}"
+		],
+		"description": "basebitmap 模板代码"
+	},
+	"progress 模板代码": {
+        "prefix": "pro",
+        "scope": "typescript",
+        "body": [
+            "let ${1} = ComponentMgr.getProgressBar(${2|ProgressBarConst|}, ${3|ProgressBarConst|}, ${4|ProgressBarConst|});",
+            "${5}(${1});"
+        ],
+        "description": "basebitmap 模板代码"
+	},
+	"TextField 模板代码": {
+        "prefix": "txt",
+        "scope": "typescript",
+        "body": [
+            "let ${1} = ComponentMgr.getTextField('11', ${2|TextFieldConst|}, ${3|ColorEnums|});",
+            "${4}(${1});",
+            "${1}.text = ${5}",
+            "${1}.x = ${6}",
+            "${1}.y = ${7}"
+        ],
+        "description": "basebitmap 模板代码"
+	},
+	"config 模板代码": {
+		"prefix": "cfg",
+		"body": [
+			"namespace Config{",
+			"    export namespace ${TM_FILENAME_BASE}{",
+			"        export function formatData(data: any){",
+			"           for(let key in data){",
+            "               this[key]=data[key];",
+            "           }",
+			"        }",
+			"    }",
+			"}"
+		],
+		"description": "config 模板代码"
+	},
+	"class popupview 模板代码": {
+		"prefix": "popupview",
+		"body": [
+		  "class ${TM_FILENAME_BASE} extends PopupView ",
+		  "{",
+		  "",
+		  "    public initView(){",
+		  "        ${1}",
+		  "    }",
+		  "",
+		  "\t// 初始化标题",
+		  "\tprotected initTitle():void",
+		  "\t{",
+		  "\t\tsuper.initTitle();",
+		  "\t}",
+		  "",
+		  "\tpublic show(data?:any):void",
+		  "\t{",
+		  "\t\tsuper.show(data);",
+		  "\t}",
+		  "",
+		  "\t// 需要加载的资源",
+		  "\tprotected getResourceList():string[]",
+		  "\t{",
+		  "\t\treturn super.getResourceList();",
+		  "\t}",
+		  "",
+		  "\tprotected initBg():void",
+		  "\t{",
+		  "\t\tsuper.initBg();",
+		  "\t}",
+		  "",
+		  "\tprotected showLineFrame():boolean",
+		  "\t{",
+		  "\t\treturn super.showLineFrame();",
+		  "\t}",
+		  "",
+		  "\tprotected checkShowContentBg():boolean",
+		  "\t{",
+		  "\t\treturn super.checkShowContentBg();",
+		  "\t}",
+		  "",
+		  "\t// 弹框面板宽度，高度动态计算",
+		  "\tprotected getShowWidth():number",
+		  "\t{",
+		  "\t\treturn super.getShowWidth();",
+		  "\t}",
+		  "",
+		  "\t// 弹框面板高度，重新该方法后，不会动态计算高度",
+		  "\tprotected getShowHeight():number",
+		  "\t{",
+		  "\t\treturn super.getShowHeight();",
+		  "\t}",
+		  "",
+		  "\t// 计算背景高度时使用，在container高度的基础上添加该高度",
+		  "\tprotected getBgExtraHeight():number",
+		  "\t{",
+		  "\t\treturn super.getBgExtraHeight();",
+		  "\t}",
+		  "",
+		  "\t// 背景图名称",
+		  "\tprotected getBgName():string",
+		  "\t{",
+		  "\t\treturn super.getBgName();",
+		  "\t}",
+		  "\t// 标题背景名称",
+		  "\tprotected getTitleBgName():string",
+		  "\t{",
+		  "\t\treturn super.getTitleBgName();",
+		  "\t}",
+		  "",
+		  "\t// 关闭按钮图标名称",
+		  "\tprotected getCloseBtnName():string",
+		  "\t{",
+		  "\t\treturn super.getCloseBtnName();",
+		  "\t}",
+		  "",
+		  "\t// 确认按钮名称",
+		  "\tprotected getConfirmBtnName():string",
+		  "\t{",
+		  "\t\treturn super.getConfirmBtnName();",
+		  "\t}",
+		  "",
+		  "\tprotected getConfirmBtnStr():string",
+		  "\t{",
+		  "\t\treturn super.getConfirmBtnStr();",
+		  "\t}",
+		  "",
+		  "\tpublic dispose():void",
+		  "\t{",
+		  "\t\tsuper.dispose();",
+		  "\t}",
+		  "}"
+		],
+		"description": "popupview 模板代码"
+	},
+	"button 模板代码": {
+		"prefix": "btn",
+		"body": [
+			"let ${1} = ComponentMgr.getButton(${2|ButtonConst|}, \"\", ${3|this,()=>{}|}, this);",
+			"${4|this.addChildToContainer,this.addChild|}(${1});",
+			"${1}.x = ${5};",
+			"${1}.y = ${6};"
+		],
+		"description": "button 模板代码"
+    },
+    "clip 模板代码": {
+        "prefix": "clip",
+        "body": [
+          "let ${1}= ComponentMgr.getCustomMovieClip(\"${CLIPBOARD}\",${2});",
+          "${1}.playWithTime(0);",
+          "this.addChild(${1});",
+          "${1}.x = ${3};",
+          "${1}.y = ${4};"
+        ],
+        "description": "clip 模板代码"
+    },
+    "ScrollView 模板代码": {
+        "prefix": "scv",
+        "body": [
+          "let ${1} = ComponentMgr.getScrollView(${2},new egret.Rectangle(${3}));",
+          "this.addChild(${1});",
+          "${1}.x = ;",
+          "${1}.y = ;"
+        ],
+        "description": "ScrollView 模板代码"
+    },
+    "getScrollList 模板代码": {
+        "prefix": "scl",
+        "body": [
+          "let ${1} = ComponentMgr.getScrollList(${2},${3},new egret.Rectangle(${4}));",
+          "this.addChild(${1});",
+          "${1}.x = ;",
+          "${1}.y = ;"
+        ],
+        "description": "getScrollList 模板代码"
+    },
+	"basebitmap 九宫图模板代码": {
+		"prefix": "s9bit",
+		"scope": "typescript",
+		"body": [
+			"let ${1} = BaseBitmap.create(${2});",
+			"${3}(${1});",
+			"${1}.width = ${4}",
+            "${1}.height = ${5}",
+            "${1}.x = ${6}",
+            "${1}.y = ${7}"
+		],
+		"description": "basebitmap 模板代码"
+    },
+    "dragonBones": {
+        "scope": "javascript,typescript",
+        "prefix": "dra",
+        "body": [
+          "App.DragonBonesUtil.getLoadDragonBones(`${CLIPBOARD}`);",
+        ],
+        "description": "dragonBones"
+      },
+    "open view":{
+        "prefix":"openview",
+        "body": "ViewController.getInstance().openView(ViewConst${1});",
+        "description": "打开界面的接口"
+    },
+    "open tip":{
+        "prefix": "rtip",
+        "body": "App.CommonUtil.showTip(${1});"
+	},
+	"go scene": {
+		"prefix": "goscene",
+		"body": "SceneController.getInstance().go(SceneConst,);",
+		"description": "场景调整",
+		"scope": "typescript"
+	},
+
+    // =========
+    "getDefaultRes": {
+        "scope": "javascript,typescript",
+        "prefix": "res",
+        "body": [
+            "this.getDefaultRes(`${1}`)",
+        ],
+        "description": "getDefaultRes"
+    },
+    "getDefaultCn": {
+        "scope": "javascript,typescript",
+        "prefix": "cn",
+        "body": [
+            "this.getDefaultCn(`${1}`)",
+        ],
+        "description": "getDefaultCn"
+    },
+    "getLocal": {
+        "scope": "javascript,typescript",
+        "prefix": "lan",
+        "body": [
+            "LangMger.getlocal(`${1}`)",
+        ],
+        "description": "LangMger.getlocal"
+    },
+
+    "layout": {
+        "scope": "javascript,typescript",
+        "prefix": "lay",
+        "body": [
+            "App.DisplayUtil.setLayoutPosition(LayoutConst${1}, ${2}, ${3}, [0,0]);",
+        ],
+        "description": "setLayoutPosition"
+    },
+
+    "string": {
+        "scope": "javascript,typescript",
+        "prefix": "s",
+        "body": [
+            "String(${1})",
+        ],
+        "description": "string"
+    },
+    "number": {
+        "scope": "javascript,typescript",
+        "prefix": "n",
+        "body": [
+            "Number(${1})",
+        ],
+        "description": "number"
+    },
+    "boolean": {
+        "scope": "javascript,typescript",
+        "prefix": "b",
+        "body": [
+            "Boolean(${1})",
+        ],
+        "description": "boolean"
+    },
+    "cen": {
+        "scope": "javascript,typescript",
+        "prefix": "hcen",
+        "body": [
+            "egret.HorizontalAlign.CENTER;",
+        ],
+        "description": "CENTER"
+	},
+	"addEvt" : {
+		"prefix": "addEvt",
+		"body": "App.MsgHelper.addEvt(${1|MsgConst,NetConst|}, ${2}, ${3|this,view|});",
+		"scope": "typescript",
+		"description": "添加监听事件"
+	},
+	"disEvt": {
+		"prefix": "disEvt",
+		"body": "App.MsgHelper.dispEvt(${1|MsgConst|}, ${2});",
+		"scope": "typescript",
+		"description": "发送事件",
+	},
+    
+    // 使用到剪切板内容的使用 c 开头
+    "Net msg":{
+		"prefix": "cmsg",
+		"scope": "typescript",
+		"body": "export const ${CLIPBOARD/(.*)/${1:/upcase}/}:string = '${CLIPBOARD/[_]/./g}';",
+		"description": "网络消息直接从剪切板上生成"
+    },
+    "view const":{
+        "prefix": "cview",
+        "body": "export const ${CLIPBOARD/(.*)/${1:/upcase}/}:string = \"${CLIPBOARD}\";"
+    },
+    "remove evt":{
+        "prefix": "crme",
+        "body": "${CLIPBOARD/addEvt/removeEvt/g}",
+        "description":"移除监听事件"
+    },
+    "get local key":{
+        "prefix": "clocal",
+        "body": "LangMger.getlocal(\"${CLIPBOARD}\")",
+        "description": "keys对应的获取语言字符串"
+	}
+}
