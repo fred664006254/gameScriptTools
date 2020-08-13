@@ -1,0 +1,5 @@
+{"file":"tokenAnimation.png","frames":{
+"tokenAnimation1":{"x":251,"y":203,"w":73,"h":301,"offX":24,"offY":0,"sourceW":257,"sourceH":301},
+"tokenAnimation2":{"x":1,"y":1,"w":248,"h":251,"offX":0,"offY":14,"sourceW":257,"sourceH":301},
+"tokenAnimation3":{"x":251,"y":1,"w":231,"h":200,"offX":26,"offY":42,"sourceW":257,"sourceH":301},
+"tokenAnimation4":{"x":1,"y":254,"w":174,"h":200,"offX":0,"offY":42,"sourceW":257,"sourceH":301}}}

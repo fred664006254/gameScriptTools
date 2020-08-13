@@ -1,0 +1,43 @@
+{
+	"engineVersion": "5.2.23",
+	"compilerVersion": "5.2.23",
+	"template": {},
+	"target": {
+		"current": "web"
+	},
+	"modules": [
+		{
+			"name": "egret"
+		},
+		{
+			"name": "game"
+		},
+		{
+			"name": "tween"
+		},
+		{
+			"name": "res"
+		},
+		{
+			"name": "dragonBones"
+		},
+		{
+			"name": "socket"
+		},
+		{
+			"name": "promise"
+		},
+		{
+			"name": "particle",
+			"path": "../Librarys/particle"
+		},
+		{
+			"name": "RSDK",
+			"path": "../Librarys/RSDK"
+		},
+		{  
+			"name": "fairygui",  
+			"path": "./libs/fairygui"  
+		}
+	]
+}

@@ -1,0 +1,31 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
+/**
+ * 踢下线面板
+ * author dky
+ * date 2017/11/24
+ * @class ConfirmPopupView
+ * 参数 ：title,msg,callback,handler
+ *
+ */
+var OfflineView = (function (_super) {
+    __extends(OfflineView, _super);
+    function OfflineView() {
+        return _super.call(this) || this;
+    }
+    OfflineView.prototype.initView = function () {
+        TickManager.stopTick();
+        _super.prototype.initView.call(this);
+    };
+    return OfflineView;
+}(ConfirmPopupView));
+__reflect(OfflineView.prototype, "OfflineView");
+//# sourceMappingURL=OfflineView.js.map

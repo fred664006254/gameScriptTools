@@ -1,0 +1,141 @@
+/**
+ * 征伐系统api
+ * author dky
+ * date 2017/12/27
+ * @class ConquestVoApi
+ */
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
+var ConquestVoApi = (function (_super) {
+    __extends(ConquestVoApi, _super);
+    function ConquestVoApi() {
+        return _super.call(this) || this;
+    }
+    ConquestVoApi.prototype.getConquestVo = function () {
+        return this.conquestVo;
+    };
+    ConquestVoApi.prototype.isShowNpc = function () {
+        var boo = false;
+        var unlock = 80 * 41;
+        if (Api.challengeVoApi.getCurChannelId() > unlock) {
+            boo = true;
+        }
+        else {
+            boo = false;
+        }
+        return boo;
+    };
+    ConquestVoApi.prototype.getLockedString = function () {
+        var unlock = 80;
+        return LanguageManager.getlocal("prisonUnlockDesc", [unlock + ""]);
+    };
+    ConquestVoApi.prototype.dispose = function () {
+        this.conquestVo = null;
+        _super.prototype.dispose.call(this);
+    };
+    // --[[
+    // A方，武力A，兵力A
+    // B方，武力B，兵力B
+    // 如果 兵A - 兵B * （武B +1000）/（ 武A+1000） >=0
+    // 则 兵B=0
+    //     兵A = 兵A - 兵B * （武B+1000） /（武A+1000）   (向上取整)
+    // 否则：
+    //     兵A=0
+    //     兵B=兵B - 兵A * （武A+1000） / （武B+1000）  (向上取整)
+    // 双方兵力都是0的时候 敌方兵力变为1 本场战斗失败
+    // ]]
+    ConquestVoApi.prototype.getBattleResult = function (atk1, soldier1, atk2, soldier2) {
+        //atk1 武力A 兵力A atk2 武力B 兵力B
+        var finaSold1 = Math.ceil(soldier1 - soldier2 * (atk2 + 1000) / (atk1 + 1000));
+        var finaSold2 = Math.ceil(soldier2 - soldier1 * (atk1 + 1000) / (atk2 + 1000));
+        var costNum = soldier2 * (atk2 + 1000) / (atk1 + 1000);
+        var success = false;
+        if (finaSold1 > 0) {
+            finaSold2 = 0;
+            success = true;
+        }
+        else if (finaSold1 == 0 && finaSold2 == 0) {
+            finaSold1 = 0;
+            finaSold2 = 1;
+        }
+        else {
+            finaSold1 = 0;
+        }
+        var battleReport = {
+            success: success,
+            left1: finaSold1,
+            left2: finaSold2,
+            cost: costNum
+        };
+        return battleReport;
+    };
+    //计算可以打多少关
+    ConquestVoApi.prototype.getAttNum = function (startIndex) {
+        var num = 0;
+        var soldierNum = Api.playerVoApi.getSoldier();
+        for (var index = startIndex; index <= 200; index++) {
+            var cfg = Config.ConquestCfg.getConquestCfgById(index + "");
+            // egret.log("index" + index)
+            if (!cfg) {
+                break;
+            }
+            var battleReport = this.getBattleResult(Api.playerVoApi.getRealAtk(), soldierNum, cfg.soldierMid / 10, cfg.soldierMid);
+            if (battleReport.success) {
+                num++;
+            }
+            soldierNum = soldierNum - battleReport.cost;
+        }
+        return num;
+    };
+    //计算消耗多少兵力
+    ConquestVoApi.prototype.getAttCostNum = function (startIndex, carNum) {
+        var costNum = 0;
+        var soldierNum = Api.playerVoApi.getSoldier();
+        for (var index = startIndex; index < startIndex + carNum; index++) {
+            var cfg = Config.ConquestCfg.getConquestCfgById(index + "");
+            if (!cfg) {
+                break;
+            }
+            var battleReport = this.getBattleResult(Api.playerVoApi.getRealAtk(), soldierNum, cfg.soldierMid / 10, cfg.soldierMid);
+            if (battleReport.success) {
+                costNum = costNum + battleReport.cost;
+            }
+            soldierNum = soldierNum - battleReport.cost;
+        }
+        return costNum;
+    };
+    ConquestVoApi.prototype.getAttCostNum2 = function (startIndex, carNum) {
+        var costNum = 0;
+        var soldierNum = Api.playerVoApi.getSoldier();
+        for (var index = startIndex; index < startIndex + carNum; index++) {
+            var cfg = Config.ConquestCfg.getConquestCfgById(index + "");
+            if (!cfg) {
+                break;
+            }
+            var battleReport = this.getBattleResult(Api.playerVoApi.getRealAtk(), soldierNum, cfg.soldierMid / 10, cfg.soldierMid);
+            costNum = costNum + battleReport.cost;
+        }
+        return costNum;
+    };
+    ConquestVoApi.prototype.getDecreePolicyAddAttrInfo = function () {
+        return Api.promoteVoApi.getDecreePolicyAddAttrInfo("conquest", 6);
+    };
+    ConquestVoApi.prototype.getCid = function () {
+        var cid = 1;
+        if (this.conquestVo && this.conquestVo.info && this.conquestVo.info.cid) {
+            cid = this.conquestVo.info.cid;
+        }
+        return cid;
+    };
+    return ConquestVoApi;
+}(BaseVoApi));
+__reflect(ConquestVoApi.prototype, "ConquestVoApi");
+//# sourceMappingURL=ConquestVoApi.js.map

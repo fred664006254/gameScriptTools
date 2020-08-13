@@ -1,0 +1,153 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
+var WelfareViewFunctionPreview = (function (_super) {
+    __extends(WelfareViewFunctionPreview, _super);
+    function WelfareViewFunctionPreview() {
+        var _this = _super.call(this) || this;
+        _this.arr2 = [];
+        return _this;
+    }
+    WelfareViewFunctionPreview.prototype.init = function () {
+        _super.prototype.init.call(this);
+        App.MessageHelper.addEventListener(NetManager.getMessageName(NetRequestConst.REQUEST_USER_UPGRADE), this.refreshText, this);
+        this.refreshDataList();
+        var rect = egret.Rectangle.create();
+        rect.setTo(0, 0, 492, GameConfig.stageHeigth - 90);
+        this._scrollList = ComponentManager.getScrollList(WelfareViewFunctionScrollltem, this.arr2, rect);
+        this.addChild(this._scrollList);
+    };
+    WelfareViewFunctionPreview.prototype.refreshText = function () {
+        // console.log("玩家升官了！！");
+        //1 玩家升官
+        //2 关卡》2 >80;
+        //3 子嗣 1个  培养一个成年子嗣
+        //4 门客15个且大于60级
+        App.MessageHelper.dispatchEvent(MessageConst.MESSAGE_REFRESH_FUNCTION_TXT);
+    };
+    WelfareViewFunctionPreview.prototype.refreshDataList = function () {
+        this.arr2 = [];
+        var arr = Api.otherInfoVoApi.getopenArr(1); //领取数据 
+        // var arr2 = [];
+        // arr2 = Config.UnlocklistCfg.getUnlockItemCfgList();
+        // var arr3 =[]; //已经领取过的
+        // var arr4 =[]; //可以领取的
+        // var arr5 =[]; //不可以领取的
+        // for(var i:number=0;i<arr2.length ;i++)
+        // {
+        // 	if(arr&&arr[arr2[i].key]==1)
+        // 	{
+        // 		arr3.push(arr2[i]);
+        // 	}
+        // 	else
+        // 	{	
+        // 		let currentName =arr2[i].gameName;
+        // 		if(currentName=="sadun"||currentName=="council" || currentName=="servantExile"||currentName=="wifebanish")
+        // 		{ 
+        // 			let isShowNpc:boolean=Api[arr2[i].gameName+"VoApi"].isShowNpc();
+        // 			// 亲家
+        // 			if(Api.switchVoApi.checkopenSadun()&&arr2[i].gameName=="sadun")
+        // 			{
+        // 				if(isShowNpc)
+        // 				{
+        // 					arr4.push(arr2[i]);
+        // 				}
+        // 				else
+        // 				{
+        // 					arr5.push(arr2[i]);
+        // 				}
+        // 			}
+        // 			// 内阁
+        // 			else if(arr2[i].gameName=="council"&&Api.switchVoApi.checkOpenCouncil())
+        // 			{ 
+        // 				if(isShowNpc)
+        // 				{
+        // 					arr4.push(arr2[i]);
+        // 				}
+        // 				else
+        // 				{
+        // 					arr5.push(arr2[i]);
+        // 				}
+        // 			} 
+        // 			 // 出海
+        // 			else if(arr2[i].gameName=="servantExile"&&Api.switchVoApi.checkOpenExile())
+        // 			{
+        // 				if(isShowNpc)
+        // 				{
+        // 					arr4.push(arr2[i]);
+        // 				}
+        // 				else
+        // 				{
+        // 					arr5.push(arr2[i]);
+        // 				}
+        // 			}
+        //             // 省亲
+        // 			else if(arr2[i].gameName=="wifebanish"&&Api.switchVoApi.checkOpenBanish())
+        // 			{
+        // 				if(isShowNpc)
+        // 				{
+        // 					arr4.push(arr2[i]);
+        // 				}
+        // 				else
+        // 				{
+        // 					arr5.push(arr2[i]);
+        // 				}
+        // 			} 
+        // 		} 
+        // 		else if(Api[arr2[i].gameName+"VoApi"]&&Api[arr2[i].gameName+"VoApi"].isShowNpc)
+        //      	{
+        //             let isShowNpc:boolean=Api[arr2[i].gameName+"VoApi"].isShowNpc();
+        // 		  	if(isShowNpc)
+        // 			{
+        // 				arr4.push(arr2[i]);
+        // 			}
+        // 			else
+        // 			{
+        // 				arr5.push(arr2[i]);
+        // 			}
+        // 		} 
+        // 	}
+        // }
+        // arr3.sort(function(a: any,b: any):number
+        // {
+        //     if(a.sortId > b.sortId) return 1;
+        //     else if(a.sortId == b.sortId) return 0;
+        //     return -1;
+        // });
+        // arr4.sort(function(a: any,b: any):number
+        // {
+        //     if(a.sortId > b.sortId) return 1;
+        //     else if(a.sortId == b.sortId) return 0;
+        //     return -1;
+        // });
+        // arr5.sort(function(a: any,b: any):number
+        // {
+        //     if(a.sortId > b.sortId) return 1;
+        //     else if(a.sortId == b.sortId) return 0;
+        //     return -1;
+        // });
+        // arr2 = arr4.concat(arr5).concat(arr3);
+        this.arr2 = arr;
+    };
+    WelfareViewFunctionPreview.prototype.getResourceList = function () {
+        return _super.prototype.getResourceList.call(this).concat([
+            "funtionbottom"
+        ]);
+    };
+    WelfareViewFunctionPreview.prototype.dispose = function () {
+        App.MessageHelper.removeEventListener(NetManager.getMessageName(NetRequestConst.REQUEST_USER_UPGRADE), this.refreshText, this);
+        this._scrollList = null;
+        this.arr2 = [];
+        _super.prototype.dispose.call(this);
+    };
+    return WelfareViewFunctionPreview;
+}(WelfareViewTab));
+__reflect(WelfareViewFunctionPreview.prototype, "WelfareViewFunctionPreview");
+//# sourceMappingURL=WelfareViewFunctionPreview.js.map

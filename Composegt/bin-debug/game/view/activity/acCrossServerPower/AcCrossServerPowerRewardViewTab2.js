@@ -1,0 +1,148 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
+var AcCrossServerPowerRewardViewTab2 = (function (_super) {
+    __extends(AcCrossServerPowerRewardViewTab2, _super);
+    function AcCrossServerPowerRewardViewTab2(param) {
+        var _this = _super.call(this) || this;
+        _this._nodeContainer = null;
+        _this.param = param;
+        _this.initView();
+        return _this;
+    }
+    Object.defineProperty(AcCrossServerPowerRewardViewTab2.prototype, "api", {
+        get: function () {
+            return Api.crossPowerVoApi;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AcCrossServerPowerRewardViewTab2.prototype, "cfg", {
+        get: function () {
+            return Config.AcCfg.getCfgByActivityIdAndCode(this.param.data.aid, this.param.data.code);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AcCrossServerPowerRewardViewTab2.prototype, "vo", {
+        get: function () {
+            return Api.acVoApi.getActivityVoByAidAndCode(this.param.data.aid, this.param.data.code);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    AcCrossServerPowerRewardViewTab2.prototype.getListType = function () {
+        return 2;
+    };
+    AcCrossServerPowerRewardViewTab2.prototype.initView = function () {
+        this._nodeContainer = new BaseDisplayObjectContainer();
+        var cfg = this.cfg;
+        var zrankinfo = this.api.zonerankinfos;
+        var zidLength = this.api.zidLength;
+        var rankList = zidLength == 2 ? cfg.getServerRankRewards() : cfg.getMulServerPRankRewards(zidLength);
+        var rList = Object.keys(rankList);
+        rList.sort(function (a, b) {
+            return Number(a) - Number(b);
+        });
+        var tmpX = 20;
+        var scroStartY = 3;
+        for (var index = 0; index < rList.length; index++) {
+            var id = index;
+            var key = rList[index];
+            var rItem = rankList[key];
+            var winBottomBg = BaseBitmap.create("rechargevie_db_01");
+            winBottomBg.width = 628;
+            winBottomBg.y = scroStartY;
+            winBottomBg.x = 6;
+            this._nodeContainer.addChild(winBottomBg);
+            var winbg = BaseBitmap.create("public_9v_bg02");
+            winbg.width = 628;
+            winbg.height = 60;
+            winbg.y = scroStartY;
+            winbg.visible = false;
+            winbg.x = GameConfig.stageWidth / 2 - winbg.width / 2;
+            this._nodeContainer.addChild(winbg);
+            var line1 = BaseBitmap.create("public_line3");
+            line1.width = 480;
+            line1.x = GameConfig.stageWidth / 2 - line1.width / 2;
+            line1.y = winbg.y + winbg.height / 2 - line1.height / 2;
+            this._nodeContainer.addChild(line1);
+            var rewardStr = rItem.reward;
+            var rank = rItem.rank;
+            var txt = ComponentManager.getTextField("", 24, TextFieldConst.COLOR_BROWN);
+            if (Number(key) < 4) {
+                txt.text = LanguageManager.getlocal("acRank_rank" + key);
+            }
+            else {
+                txt.text = txt.text = LanguageManager.getlocal("acRank_rank4", [String(rank[0]), String(rank[1])]);
+            }
+            txt.x = GameConfig.stageWidth / 2 - txt.width / 2;
+            txt.y = winbg.y + winbg.height / 2 - txt.height / 2;
+            this._nodeContainer.addChild(txt);
+            var rIcons = GameData.getRewardItemIcons(rewardStr, true, true);
+            var len = rIcons.length;
+            var startY = winbg.y + winbg.height + 5;
+            tmpX = 20;
+            scroStartY = startY;
+            for (var innerIdx = 0; innerIdx < len; innerIdx++) {
+                var element = rIcons[innerIdx];
+                element.x = tmpX;
+                element.y = scroStartY;
+                tmpX += (element.width + 15);
+                if (tmpX >= GameConfig.stageWidth) {
+                    tmpX = 20;
+                    scroStartY += element.height + 15;
+                    element.x = tmpX;
+                    element.y = scroStartY;
+                    tmpX += (element.width + 15);
+                }
+                this._nodeContainer.addChild(element);
+            }
+            scroStartY += 130;
+            winBottomBg.height = scroStartY - winBottomBg.y;
+            scroStartY += 10;
+        }
+        scroStartY += 10;
+        // 膜拜背景
+        var bottomBg = BaseBitmap.create("wifeview_bottombg");
+        // bottomBg.width = 628
+        // bottomBg.height = 120;
+        // bottomBg.x = 6;
+        bottomBg.y = GameConfig.stageHeigth - bottomBg.height - 150;
+        this.addChild(bottomBg);
+        var txt3 = ComponentManager.getTextField("", 20);
+        if (this.api.merank) {
+            txt3.text = LanguageManager.getlocal("acRank_myrank1", [String(this.api.merank)]);
+        }
+        else {
+            txt3.text = LanguageManager.getlocal("acRank_myrank1", [LanguageManager.getlocal("atkracedes4")]);
+        }
+        txt3.x = bottomBg.x + 30;
+        txt3.y = bottomBg.y + bottomBg.height / 2 - txt3.height / 2;
+        this.addChild(txt3);
+        var txt4 = ComponentManager.getTextField(LanguageManager.getlocal("atkracecrossActivityRewardTxt5"), 20, TextFieldConst.COLOR_LIGHT_YELLOW);
+        txt4.x = bottomBg.x + bottomBg.width - txt4.width - 30;
+        txt4.y = txt3.y;
+        this.addChild(txt4);
+        var rect = new egret.Rectangle(0, 0, GameConfig.stageWidth, bottomBg.y - 10);
+        var scrollView = ComponentManager.getScrollView(this._nodeContainer, rect);
+        scrollView.y = 3;
+        scrollView.horizontalScrollPolicy = "off";
+        this.addChild(scrollView);
+    };
+    AcCrossServerPowerRewardViewTab2.prototype.dispose = function () {
+        this._nodeContainer = null;
+        this._collectBtn = null;
+        this._collectFlag = null;
+        _super.prototype.dispose.call(this);
+    };
+    return AcCrossServerPowerRewardViewTab2;
+}(CommonViewTab));
+__reflect(AcCrossServerPowerRewardViewTab2.prototype, "AcCrossServerPowerRewardViewTab2");

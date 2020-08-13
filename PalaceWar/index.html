@@ -1,0 +1,494 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    
+    <meta charset="utf-8">
+    <title>江山美人</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="full-screen" content="true" />
+    <meta name="screen-orientation" content="portrait" />
+    <meta name="x5-fullscreen" content="true" />
+    <meta name="x5-orientation" content="portrait"/>
+    <meta name="360-fullscreen" content="true" />
+    <style>
+        html, body {
+            -ms-touch-action: none;
+            background: #131F2C;
+            padding: 0;
+            border: 0;
+            margin: 0;
+            height: 100%;
+        }
+        progress::-webkit-progress-bar {
+            background-color: #001219;
+        }
+        
+        progress::-webkit-progress-value {
+            background-color: #21BDE1;
+        }
+    </style>
+    </head>
+
+<body>
+    <div style="margin: auto;width: 100%;height: 100%;" class="egret-player"
+         data-entry-class="Main"
+         data-orientation="portrait"
+         data-scale-mode="fixedWidth"
+         data-frame-rate="30"
+         data-content-width="640"
+         data-content-height="1136"
+         data-multi-fingered="2"
+         data-show-fps="false" data-show-log="false"         
+         data-show-fps-style="x:0,y:0,size:12,textColor:0xffffff,bgAlpha:0.9">
+    </div>
+    <div id="alertdiv" style="position:absolute;width:100%;top:30%;height:60%; left:0;text-align:center;color:white;font-size:20px;">
+                <tl id="rayIdxTitle" style="color: #b0faff;font-size: 30;">健康游戏忠告</tl><br>
+                <tf id="rayIdxDesc1" style="color: #6ebdc6;font-size: 26;">抵制不良游戏，拒绝盗版游戏。</tf><br>
+                <tf id="rayIdxDesc2" style="color: #6ebdc6;font-size: 26;">注意自我保护，谨防上当受骗。</tf><br>
+                <tf id="rayIdxDesc3" style="color: #6ebdc6;font-size: 26;">适度游戏益脑，沉迷游戏伤身。</tf><br>
+                <tf id="rayIdxDesc4" style="color: #6ebdc6;font-size: 26;">合理安排时间，享受健康生活。</tf><br>
+                <tf id="rayIdxload1" style="position:relative;color: #ffffff;font-size: 24;top:40%;">如果无法进入游戏，请
+                <a id="rayIdxload2" href = "javascript:void(0);" onclick ="js_creload()" style="color: #ff0000;font-size: 24;text-align:center;">点击刷新</a></tf><br>
+                <progress id="loadJsProgress" value="1" max="100" style="position:relative;text-align:center;background:white;width:16em;height:0.3em;top:40%"></progress>
+            </div><div id="gameloadresfaildiv" style="border: 1px solid;width: 100%;margin: auto;height: 100%;position: fixed;left: 0px;top: 0px;background: rgb(0,0,0,0.6);overflow: auto;text-align: center;display: none;">
+        <div style="background: white;width: 250px;height: 150px;margin: auto;margin-top: 48%;border-radius: 5px;">
+            <div style="height: 110px;border-bottom: 1px solid #CCCCCC;">
+                <div style="font-size: 0.9rem;padding-top: 30px;">网络异常</div>
+                <div style="font-size: 0.8rem;margin-top: 15px;">请检查网络或尝试wifi和流量互切</div>
+            </div>
+            <div style="height: 39px;">
+                <div onclick="javascript:window.retryloadgamefailres()" style="float: none;height: 39px;line-height: 39px;font-size: 1rem;">重试</div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        // document.body.addEventListener("blur",function(){
+        //     window.scrollTo(0,0);
+        // },true);
+        var js_creload=function()
+        {
+                        if(window["RSDKPlatform"])
+            {
+                if(window["RSDKPlatform"].getDisableCache&&window["RSDKPlatform"].getDisableCache()!="1")
+                {
+                    if(window["RSDKPlatform"].clearCache)
+                    {
+                        window["RSDKPlatform"].clearCache("1");
+                    }
+                }
+            }
+            window.location.reload();
+        }
+        var window_width = document.documentElement.clientWidth;
+        var window_height = document.documentElement.clientHeight;
+        if(window_width==0&&window_height==0)
+        {
+            window_width=640;
+            window_height=960;
+        }
+        var fontsizeValue=document.body.scrollWidth;
+        if(window_height/window_width<3/2)
+        {
+            var tmpH=document.body.scrollHeight<640?640:document.body.scrollHeight;
+            fontsizeValue=tmpH*2/3;
+        }
+        else
+        {
+            fontsizeValue=fontsizeValue<320?320:fontsizeValue;
+        }
+        if(document.getElementById("rayIdxTitle"))
+        {
+            document.getElementById("rayIdxTitle").style.fontSize =Math.ceil(15*fontsizeValue/320)+"px";
+            document.getElementById("rayIdxDesc1").style.fontSize =Math.ceil(13*fontsizeValue/320)+"px";
+            document.getElementById("rayIdxDesc2").style.fontSize =Math.ceil(13*fontsizeValue/320)+"px";
+            document.getElementById("rayIdxDesc3").style.fontSize =Math.ceil(13*fontsizeValue/320)+"px";
+            document.getElementById("rayIdxDesc4").style.fontSize =Math.ceil(13*fontsizeValue/320)+"px";
+        }
+        if(document.getElementById("rayIdxload1"))
+        {
+            document.getElementById("rayIdxload1").style.fontSize =Math.ceil(10*fontsizeValue/320)+"px";
+            document.getElementById("rayIdxload2").style.fontSize =Math.ceil(10*fontsizeValue/320)+"px";
+        }
+    </script>
+
+    <script>
+                window["VERINFO_VER"]=2;
+		var window_width = document.documentElement.clientWidth;
+	    var window_height = document.documentElement.clientHeight;
+    	var egretDocument = document.getElementsByClassName("egret-player")[0];
+        var isPC=false;
+        var p=navigator.platform;
+        if(p.indexOf("Win")==0||p.indexOf("Mac")==0||p=="X11")
+        {
+            isPC=true;
+        }
+                if(window_height/window_width>=1136/640)
+        {
+            if(egretDocument.getAttribute("data-content-height"))
+            {
+                egretDocument.setAttribute("data-content-height",(window_height/window_width*640).toString());
+            }
+        }
+        else if(window_height/window_width<=960/640)
+        {
+            if(egretDocument.getAttribute("data-content-height"))
+            {
+                egretDocument.setAttribute("data-content-height","960");
+            }
+        }
+        else
+        {
+            if(egretDocument.getAttribute("data-content-height"))
+            {
+                egretDocument.setAttribute("data-content-height",(window_height/window_width*640).toString());
+            }
+        }
+        if(egretDocument.getAttribute("data-scale-mode"))
+        {
+            egretDocument.setAttribute("data-scale-mode","exactFit");
+        }
+        if(isPC)
+        {
+            if(window_height/window_width<=1)
+            {
+                if(egretDocument.getAttribute("data-scale-mode"))
+                {
+                    egretDocument.setAttribute("data-scale-mode","showAll");
+                }
+            }
+            if(egretDocument.getAttribute("data-orientation"))
+            {
+                egretDocument.setAttribute("data-orientation","auto");
+            }
+        }
+        
+        if(window["RSDKPlatform"])
+        {
+            if(window["RSDKPlatform"].clearCache)
+            {
+                if(window["RSDKPlatform"].setDisableCache)
+                {
+                    if(window.location.search&&window.location.search.indexOf("gamediscache=0")>-1)
+                    {
+                    }
+                    else
+                    {
+                        if(window["RSDKPlatform"].getDisableCache()=="1")
+                        {
+                            window["RSDKPlatform"].setDisableCache("0");
+                            console.log("open newcache");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if(window["RSDKPlatform"].setDisableCache)
+                {
+                    window["RSDKPlatform"].setDisableCache("1");
+                    console.log("close newcache");
+                }
+            }
+        }
+	</script>
+    <script>
+        var fbNm=0;
+        var isGmRsCrossD=false;
+        var host=window.location.host;
+        var baseURI=document.baseURI;
+        var gameScriptLoadCountData={};
+        var defaultgameCDN=baseURI;
+        var lastgameCDN=baseURI;
+        if(baseURI&&baseURI.indexOf(host)<0)
+        {
+            isGmRsCrossD=true;
+        }
+        var loadScript = function (list, callback) {
+            var loaded = 0;
+            var loadNext = function () {
+                loadSingleScript(list[loaded], function () {
+                    loaded++;
+                    var progress = document.getElementById('loadJsProgress');
+                    progress.value=Math.floor(loaded/list.length*100);
+                                        if (loaded >= list.length) {
+                        progress.style.display="none";
+                                                fbNm++;
+                        callback();
+                    }
+                    else {
+                        loadNext();
+                    }
+                },function(){
+                    if(trySwitchCDN(list[loaded],list,loaded)<12)
+                    {
+                        loadNext();
+                    }
+                    else
+                    {
+                        var divId="gameloadresfaildiv";
+                        var element = document.getElementById(divId);
+                        if(element)
+                        {
+                            element.style.display="block";
+                            window.retryloadgamefailres=function(){
+                                element.style.display="none";
+                                loadNext();
+                            }
+                        }
+                    }
+                });
+            };
+            loadNext();
+        };
+
+            
+    var reportIndexLoadResult=function(filename)
+    {
+        var logstrData={filename:filename,base:document.baseURI,failnum:(gameScriptLoadCountData[filename]?gameScriptLoadCountData[filename]:0),href:location.href};
+        var gtplat = location.pathname.substr(0,location.pathname.lastIndexOf("/"));
+        gtplat=gtplat.substr(gtplat.lastIndexOf("/")+1);
+        var rptData={filename:"index",logstr:JSON.stringify(logstrData),platform:gtplat};
+        var rxhr=new XMLHttpRequest();
+        rxhr.open("POST","//gt-clientlog.raygame3.com/create_errorlog.php");
+        rxhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        rxhr.send(JSON.stringify(rptData));
+    }
+
+    var loadSingleScript = function (src, callback,loadFailCallback) {
+        var s = document.createElement('script');
+        if(isGmRsCrossD)
+        {
+            s.setAttribute("crossorigin","anonymous");
+        }
+        var isgamejserror=false;
+        s.async = false;
+        s.src = src;
+        var cjsloaded=function () {
+            s.parentNode.removeChild(s);
+            s.removeEventListener('load', cjsloaded, false);
+            s.removeEventListener('error', cjserrored);
+            callback();
+        };
+        s.addEventListener('load', cjsloaded, false);
+
+        var cjserrored=function () {
+            if(isgamejserror==false)
+            {
+                isgamejserror=true;
+                setTimeout(function() {
+                    if(s.parentNode)
+                    {
+                        s.parentNode.removeChild(s);
+                    }
+                    s.removeEventListener('load', cjsloaded, false);
+                    s.removeEventListener('error', cjserrored);
+                    if(loadFailCallback)
+                    {
+                        loadFailCallback();
+                    }
+                    
+                }, 100);
+            }
+        };
+        s.addEventListener("error", cjserrored);
+        s.onreadystatechange=function(){
+            if (s.readyState == 4&&(s.status >= 400||s.status ==0))
+            {
+                cjserrored();
+            }
+        };
+        document.body.appendChild(s);
+    };
+
+    var trySwitchCDN=function(filename,list,loaded,addValue)
+    {
+        if(!addValue)
+        {
+            addValue=1;
+        }
+        if(!gameScriptLoadCountData[filename])
+        {
+            gameScriptLoadCountData[filename]=addValue;
+        }
+        else
+        {
+            gameScriptLoadCountData[filename]+=addValue;
+        }
+
+        if(gameScriptLoadCountData[filename]==4)
+        {
+            if(filename.indexOf("//192.168.8.82/rsdk/rsdk.js")>-1)
+            {
+                if(list)
+                {
+                    list[loaded]=list[loaded].replace("//192.168.8.82",".");
+                    gameScriptLoadCountData[filename]=1;
+                    reportIndexLoadResult(filename);
+                }
+            }
+            else
+            {
+                var element = document.getElementById("gtgamebaseurl");
+                if(element)
+                {
+                    lastgameCDN=document.baseURI;
+                    var bseurl="";
+                        element.setAttribute("href",bseurl);                }
+            }
+        }
+        else if(gameScriptLoadCountData[filename]==8)
+        {
+            var element = document.getElementById("gtgamebaseurl");
+            if(element)
+            {
+                var bseurl="./";
+                    element.setAttribute("href",bseurl);            }
+        }
+
+        if(gameScriptLoadCountData[filename]%4==0)
+        {
+            reportIndexLoadResult(filename);
+        }
+        return gameScriptLoadCountData[filename];
+    }
+
+    var recoveryCDN=function(filename,baseurl)
+    {
+        if(gameScriptLoadCountData[filename]&&gameScriptLoadCountData[filename]>=4)
+        {
+            var element = document.getElementById("gtgamebaseurl");
+            if(element)
+            {
+                var bseurl=baseurl?baseurl:defaultgameCDN;
+                    element.setAttribute("href",bseurl);            }
+        }
+        gameScriptLoadCountData[filename]=0;
+    }
+
+    var retryManifest=function()
+    {
+        if(trySwitchCDN(manifestJsonName)<12)
+        {
+            loadManifest();
+        }
+        else
+        {
+            var divId="gameloadresfaildiv";
+            var element = document.getElementById(divId);
+            if(element)
+            {
+                element.style.display="block";
+                window.retryloadgamefailres=function(){
+                    element.style.display="none";
+                    loadManifest();
+                }
+            }
+        }
+    }
+
+    var defaultResJsonName="default.res.json";
+    var manifestJsonName="manifest.json";
+    var loadManifest=function()
+    {
+        var xhr = new XMLHttpRequest();
+        var idxdatev=new Date();
+        var ismanierror=false;
+        xhr.open('GET', manifestJsonName=="manifest.json"?'./'+manifestJsonName+'?v=' + Math.floor(idxdatev.getTime()/1000):'./'+manifestJsonName, true);
+        xhr.addEventListener("load", function () {
+            var manifest = JSON.parse(xhr.response);
+            var list = manifest.initial.concat(manifest.game);
+            var rsdkurl = "//192.168.8.82/rsdk/rsdk.js?v="+Math.floor(idxdatev.getTime()/10000);
+            list.unshift(rsdkurl);            loadScript(list, runEgret);
+        });
+        xhr.addEventListener("error", function () {
+            xhr.abort();
+            if(ismanierror==false)
+            {
+                ismanierror=true;
+                setTimeout(function() {
+                    retryManifest();
+                }, 100);
+            }
+        });
+        xhr.onreadystatechange=function(){
+            if (xhr.readyState == 4&&(xhr.status >= 400||xhr.status ==0))
+            {
+                if(ismanierror==false)
+                {
+                    ismanierror=true;
+                    setTimeout(function() {
+                        retryManifest();
+                    }, 100);
+                }
+            }            
+        };
+        xhr.send(null);
+    }
+    loadManifest();
+        var runEgret=function () {
+                /**
+         * {
+         * "renderMode":, //Engine rendering mode, "canvas" or "webgl"
+         * "audioType": 0 //Use the audio type, 0: default, 2: web audio, 3: audio
+         * "antialias": //Whether the anti-aliasing is enabled in WebGL mode, true: on, false: off, defaults to false
+         * "calculateCanvasScaleFactor": //a function return canvas scale factor
+         * }
+         **/
+            var ua3="";
+            var audioTp=0;
+            try {
+                ua3=navigator.userAgent.toLowerCase();
+                if(ua3.indexOf("micromessenger") >= 0)
+                {
+                    audioType = 0;
+                }
+                else if (ua3.indexOf("android") >= 0) {//android
+                    var andStr= ua3.substring(ua3.indexOf("android"));
+                    andStr= andStr.substring(0,andStr.indexOf("."));
+                    andStr= andStr.replace("android","");
+                    andStr= andStr.replace(/\r/g,"");
+                    if(Number(andStr)<5)
+                    {
+                        audioTp=3;
+                    }
+                    else
+                    {
+                        var audioTp3Arr=["lex","od10","os10","oppo"];
+                        for(var i=0;i<audioTp3Arr.length;i++)
+                        {
+                            if(ua3.indexOf(audioTp3Arr[i])>-1)
+                            {
+                                audioTp=3;
+                                break;
+                            }
+                        }
+                    }
+                }
+            } catch (error) 
+            {
+                audioTp=3;
+            }
+                var gamerenderMode="webgl";
+        if(window.location.search.indexOf("&webgl=0")>-1||window.location.search.indexOf("?webgl=0")>-1)
+        {
+            gamerenderMode="canvas";
+        }
+        egret.runEgret({ renderMode: gamerenderMode, audioType: audioTp, calculateCanvasScaleFactor:function(context) {
+            var backingStore = context.backingStorePixelRatio ||
+                context.webkitBackingStorePixelRatio ||
+                context.mozBackingStorePixelRatio ||
+                context.msBackingStorePixelRatio ||
+                context.oBackingStorePixelRatio ||
+                context.backingStorePixelRatio || 1;
+            return (window.devicePixelRatio || 1) / backingStore;
+        }});
+    };
+</script>
+</body>
+
+</html>
